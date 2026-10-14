@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>arXiv Query: id_list=2601.00002 (fixture)</title>
+  <entry>
+    <id>http://arxiv.org/abs/2601.00002v1</id>
+    <title>Language models for species occurrence extraction</title>
+  </entry>
+</feed>

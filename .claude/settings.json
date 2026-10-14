@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(data/**)",
+      "Edit(bib/**)",
+      "Edit(reviews/**)",
+      "Edit(config/**)",
+      "Edit(R/**)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "WebFetch"
+    ]
+  }
+}

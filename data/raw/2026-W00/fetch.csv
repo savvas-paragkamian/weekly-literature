@@ -1,0 +1,7 @@
+source,topic,query,url,pages,items,seconds,status
+europepmc,collembola,(TITLE_ABS:(Collembola OR springtail*)) AND FIRST_PDATE:[2025-12-19 TO 2025-12-28],https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=...,1,2,0.4,ok
+openalex,collembola,"title_and_abstract.search:Collembola OR springtail OR springtails,from_publication_date:2025-12-19,to_publication_date:2025-12-28",https://api.openalex.org/works?filter=...,1,1,0.3,ok
+openalex,llm-biodiversity,"title_and_abstract.search:(""large language model"" OR LLM) AND (biodiversity OR ecology),from_publication_date:2025-12-19,to_publication_date:2025-12-28",https://api.openalex.org/works?filter=...,1,1,0.3,ok
+arxiv,llm-biodiversity,(abs:biodiversity AND abs:LLM) AND submittedDate:[202512190000 TO 202512282359],https://export.arxiv.org/api/query?search_query=...,1,1,1.1,ok
+biorxiv,ecology,category=ecology,https://api.biorxiv.org/details/biorxiv/2025-12-19/2025-12-28/0/json?category=ecology,1,1,0.5,ok
+biodivpmc,crete-soils-caves_plazi,Crete OR Cretan OR Aegean [plazi],https://biodiversitypmc.sibils.org/api/search (POST jq),1,0,0.6,ok

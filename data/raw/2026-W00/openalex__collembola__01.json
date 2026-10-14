@@ -1,0 +1,3 @@
+{"meta":{"count":1,"page":1,"per_page":200},"results":[
+{"id":"https://openalex.org/W9000000001","doi":"https://doi.org/10.1234/fixture-1","title":"Collembola communities of coastal dunes in Crete","display_name":"Collembola communities of coastal dunes in Crete","publication_date":"2025-12-23","type":"article","primary_location":{"source":{"display_name":"Journal of Invented Results"},"landing_page_url":"https://doi.org/10.1234/fixture-1"},"authorships":[{"author":{"display_name":"A. Example"}},{"author":{"display_name":"B. Sample"}}],"abstract_inverted_index":{"A":[0],"fixture":[1],"record":[2],"for":[3],"testing.":[4]},"open_access":{"is_oa":true}}
+]}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom">
+  <title>arXiv Query: fixture for the weekly literature review tests</title>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <opensearch:itemsPerPage>1</opensearch:itemsPerPage>
+  <entry>
+    <id>http://arxiv.org/abs/2601.00002v1</id>
+    <updated>2025-12-26T10:00:00Z</updated>
+    <published>2025-12-26T10:00:00Z</published>
+    <title>Language models for species occurrence extraction</title>
+    <summary>A fixture entry for testing, not a real preprint. The same title as an OpenAlex record whose DOI resolves to a different paper, so the two merge by title and the merged item fails verification.</summary>
+    <author><name>E. Model</name></author>
+    <author><name>F. Prompt</name></author>
+    <arxiv:primary_category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <link href="http://arxiv.org/abs/2601.00002v1" rel="alternate" type="text/html"/>
+  </entry>
+</feed>

@@ -1,0 +1,3 @@
+{"meta":{"count":1,"page":1,"per_page":200},"results":[
+{"id":"https://openalex.org/W9000000003","doi":"https://doi.org/10.5555/fixture-3","title":"Language models for species occurrence extraction","display_name":"Language models for species occurrence extraction","publication_date":"2025-12-26","type":"article","primary_location":{"source":{"display_name":"Invented Informatics Letters"},"landing_page_url":"https://doi.org/10.5555/fixture-3"},"authorships":[{"author":{"display_name":"E. Model"}},{"author":{"display_name":"F. Prompt"}}],"abstract_inverted_index":{"A":[0],"fixture":[1],"record":[2],"whose":[3],"DOI":[4],"resolves":[5],"to":[6],"a":[7],"different":[8],"title.":[9]},"open_access":{"is_oa":false}}
+]}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  The local clock, for a Mac that is awake on Monday mornings: pull the
+  Action's commit, then run the week locally (a mirror of the Action; the
+  Action is the record). Install:
+    cp launchd/org.paragkamian.weekly-literature.plist ~/Library/LaunchAgents/
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/org.paragkamian.weekly-literature.plist
+  Test now:
+    launchctl kickstart -k gui/$(id -u)/org.paragkamian.weekly-literature
+  Remove:
+    launchctl bootout gui/$(id -u)/org.paragkamian.weekly-literature
+  Edit the two paths below if the repository or Rscript live elsewhere.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>org.paragkamian.weekly-literature</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>-lc</string>
+    <string>cd "$HOME/projects/weekly-literature" &amp;&amp; git pull --ff-only &amp;&amp; /usr/local/bin/Rscript R/run_week.R &gt;&gt; provenance/launchd.out 2&gt;&amp;1</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Weekday</key>
+    <integer>1</integer>
+    <key>Hour</key>
+    <integer>8</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+  <key>StandardErrorPath</key>
+  <string>/Users/talos/projects/weekly-literature/provenance/launchd.err</string>
+</dict>
+</plist>

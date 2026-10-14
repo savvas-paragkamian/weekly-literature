@@ -1,0 +1,63 @@
+# The clock: every Monday at 06:00 UTC, fetch the week that just ended, verify
+# every identifier, write the review and the bibliography, and commit them.
+# No model runs here. The one secret is OPENALEX_API_KEY: without a key,
+# OpenAlex meters requests against a free daily budget shared by every machine
+# behind the runner's IP address (observed 14 October 2026), which a shared
+# runner cannot rely on. The scripts read the key from the environment and
+# never print it.
+name: weekly literature
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      week:
+        description: 'ISO week to run, e.g. 2026-W42 (empty: the week that ended yesterday)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.1'
+          use-public-rspm: true
+
+      - name: System libraries for xml2, curl and openssl
+        run: sudo apt-get update && sudo apt-get install -y libxml2-dev libcurl4-openssl-dev libssl-dev
+
+      - uses: r-lib/actions/setup-renv@v2
+
+      - name: A check that can fail, before the run
+        run: Rscript R/03_check.R --self-test
+
+      - name: Run the week
+        run: Rscript R/run_week.R ${{ inputs.week }}
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+
+      - name: Keep the raw responses as an artifact (not in git)
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-${{ github.run_id }}
+          path: data/raw/
+          retention-days: 90
+
+      - name: Commit the week
+        run: |
+          git config user.name "weekly-literature"
+          git config user.email "actions@users.noreply.github.com"
+          git add reviews bib data/normalised data/seen.csv provenance index.md
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          week=$(ls provenance/*.log.md | sort | tail -1 | xargs -n1 basename | sed 's/\.log\.md$//')
+          new=$(grep -o '[0-9]* new' "provenance/$week.log.md" | head -1)
+          git commit -m "Week $week: ${new:-run}"
+          git push
