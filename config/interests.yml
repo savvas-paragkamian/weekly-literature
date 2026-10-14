@@ -1,0 +1,219 @@
+# The vocabulary of the weekly literature review.
+#
+# Written by hand by the author. The scripts look these queries up and never
+# change them; the assistant skill may use only the topics and Consensus
+# queries listed here. Tune after a few weeks from the counts in provenance/.
+#
+# Per topic:
+#   europepmc  Europe PMC query (the date range is added by the script)
+#   openalex   OpenAlex title-and-abstract search (boolean AND/OR/NOT, quotes)
+#   arxiv      arXiv search_query (ti:/abs:/cat: prefixes; date added by the script)
+#   biodivpmc  Biodiversity PMC query_string over title, abstract and keywords
+#   biodivpmc_cols  collections to search by week: medline (abstracts, current) and
+#              pmc (full text, about two months behind on 14 October 2026). The
+#              plazi collection has no publication date in SIBiLS's index and
+#              cannot be searched by week; suppdata is not used.
+#   biorxiv_categories  bioRxiv categories to fetch; a record is kept for the
+#              topic when one of `terms` matches its title or abstract
+#   terms      words and phrases that mark the topic (case-insensitive, word boundary)
+#   consensus  queries the assistant skill may run through the Consensus MCP
+
+contact: "s.paragamian@gmail.com"
+overlap_days: 10       # days before the week fetched too, reported only if unseen:
+                       # a preprint's DOI can take days to register at Crossref,
+                       # and an item that failed to verify is retried while it
+                       # stays inside the window (set on 14 October 2026 after
+                       # 53 fresh DOIs failed to resolve in the first week)
+max_per_topic: 25      # listed per topic in the review; the rest are counted
+delay_seconds:
+  default: 1
+  arxiv: 3
+biorxiv_server: biorxiv
+
+topics:
+  - id: collembola
+    label: Collembola, soil fauna and KYBELE
+    terms: [Collembola, collembolan, collembolans, springtail, springtails, "Fauna Europaea", "taxonomic treatment"]
+    europepmc: 'TITLE_ABS:(Collembola OR springtail*)'
+    openalex: 'Collembola OR springtail OR springtails'
+    biodivpmc: 'Collembola OR springtail OR springtails'
+    biodivpmc_cols: [medline, pmc]
+    biorxiv_categories: [ecology, evolutionary_biology, zoology]
+    arxiv: null
+    consensus:
+      - "Collembola responses to soil disturbance"
+      - "springtail new species description"
+
+  - id: coastal-soil-metagenomes
+    label: Coastal and saline soil metagenomes (TREC)
+    terms: ["coastal soil", "saline soil", "salt marsh", "land-sea", "land sea", metagenom, "metagenome-assembled",
+            biocrust, SPIRE, GMGC, SMAG, "Microflora Danica", LUCAS, mOTUs, SingleM]
+    europepmc: 'TITLE_ABS:((coastal OR saline OR salt OR dune OR estuar*) AND soil AND metagenom*)'
+    openalex: '(coastal OR saline OR "salt marsh" OR dune) AND soil AND (metagenome OR metagenomics OR metagenomic)'
+    biodivpmc: '(coastal OR saline OR "salt marsh") AND soil AND (metagenome OR metagenomics OR metagenomic)'
+    biodivpmc_cols: [medline, pmc]
+    biorxiv_categories: [microbiology, bioinformatics, ecology, genomics]
+    arxiv: null
+    consensus:
+      - "coastal soil microbiome land-sea gradient"
+      - "soil metagenome catalogue metagenome-assembled genomes Europe"
+
+  - id: resistome-mobilome
+    label: Resistome, mobilome and land-sea gene flux
+    terms: [resistome, "antibiotic resistance gene", "antibiotic resistance genes", mobilome, "mobile genetic element", "mobile genetic elements", plasmid, integron]
+    europepmc: 'TITLE_ABS:((resistome OR "antibiotic resistance genes" OR mobilome OR "mobile genetic elements") AND (soil OR coastal OR estuar* OR sediment))'
+    openalex: '(resistome OR "antibiotic resistance genes" OR mobilome OR "mobile genetic elements") AND (soil OR coastal OR estuary OR sediment)'
+    biodivpmc: null
+    biorxiv_categories: [microbiology]
+    arxiv: null
+    consensus:
+      - "soil resistome mobilome metagenomics land-sea"
+
+  - id: soil-policy
+    label: EU soil monitoring and soil health law
+    terms: ["soil monitoring", "soil health", "Soil Monitoring Law", "soil directive", LUCAS]
+    europepmc: 'TITLE_ABS:(("soil monitoring" OR "soil health") AND (directive OR Europe OR European OR policy))'
+    openalex: '("soil monitoring" OR "soil health") AND (directive OR "European Union" OR policy)'
+    biodivpmc: null
+    biorxiv_categories: []
+    arxiv: null
+    consensus:
+      - "EU soil monitoring law soil health indicators biodiversity"
+
+  - id: drylands-biocrusts
+    label: Biocrusts, desertification and ecological engineering
+    terms: [biocrust, biocrusts, "biological soil crust", dryland, drylands, desertification, terraformation, "ecological engineering", SYNTERRA]
+    europepmc: 'TITLE_ABS:((biocrust* OR "biological soil crust*" OR dryland* OR desertification) AND (microb* OR metagenom* OR "synthetic biology"))'
+    openalex: '(biocrust OR biocrusts OR "biological soil crust" OR drylands OR desertification) AND (microbiome OR metagenomics OR "synthetic biology")'
+    biodivpmc: null
+    biorxiv_categories: [microbiology, ecology]
+    arxiv: null
+    consensus:
+      - "biocrust microbiome restoration drylands synthetic inoculum"
+
+  - id: crete-soils-caves
+    label: Crete, island soils, caves and endemic arthropods
+    terms: [Crete, Cretan, Aegean, "cave microbiome", "island soil", "Natura 2000", "Key Biodiversity Area", endemic]
+    europepmc: 'TITLE_ABS:((Crete OR Cretan OR Aegean) AND (soil OR cave OR endemic OR arthropod* OR microbiome OR biodiversity))'
+    openalex: '(Crete OR Cretan OR Aegean) AND (soil OR cave OR endemic OR arthropods OR microbiome)'
+    # medline is all of MEDLINE, so the place names need a biodiversity term
+    biodivpmc: '(Crete OR Cretan OR Aegean) AND (soil OR cave OR caves OR endemic OR arthropod OR arthropods OR biodiversity OR microbiome)'
+    biodivpmc_cols: [medline, pmc]
+    biorxiv_categories: [ecology, zoology]
+    arxiv: null
+    consensus:
+      - "Crete endemic arthropods conservation hotspots"
+
+  - id: soil-16s-standards
+    label: Island Sampling Day, GSC/MIxS and soil 16S surveys
+    terms: ["Island Sampling Day", MIxS, "Genomic Standards Consortium", "LUCAS Soil", "16S rRNA", amplicon]
+    europepmc: 'TITLE_ABS:("Island Sampling Day" OR MIxS OR "Genomic Standards Consortium" OR "LUCAS Soil")'
+    # OpenAlex stems words, so the acronym MIxS matches "mix": phrases only here
+    openalex: '"Island Sampling Day" OR "Genomic Standards Consortium" OR "LUCAS Soil" OR "minimum information about any sequence"'
+    biodivpmc: null
+    biorxiv_categories: []
+    arxiv: null
+    consensus: []
+
+  - id: text-mining-biodiversity
+    label: Text mining of biodiversity literature
+    terms: [PREGO, "species occurrence", "text mining", "text-mining", "named entity", "named-entity", OCR, Plazi, "taxonomic treatment", "Biodiversity PMC", "Biodiversity Heritage Library", "information extraction"]
+    europepmc: 'TITLE_ABS:(("text mining" OR "named entity" OR "information extraction" OR OCR) AND (biodiversity OR taxonom* OR species OR "natural history"))'
+    openalex: '("text mining" OR "named entity" OR "information extraction") AND (biodiversity OR taxonomy OR taxonomic OR "natural history")'
+    biodivpmc: '("text mining" OR "named entity recognition" OR "information extraction") AND (biodiversity OR species OR taxonomic OR taxonomy OR ecology)'
+    biodivpmc_cols: [medline, pmc]
+    biorxiv_categories: [bioinformatics]
+    arxiv: '(abs:biodiversity OR abs:taxonomic OR abs:"species names" OR abs:"natural history") AND (abs:"text mining" OR abs:"named entity" OR abs:"information extraction" OR abs:OCR) AND (cat:cs.CL OR cat:cs.DL OR cat:cs.IR)'
+    consensus:
+      - "text mining biodiversity literature species names extraction"
+
+  - id: biodiversity-standards
+    label: Biodiversity data standards and AI-ready data
+    terms: ["Darwin Core", MIxS, ENVO, EUNIS, "I-ADOPT", "FAIR principles", "FAIR data", "CARE principles", GBIF, OBIS, MGnify, EMODnet, TDWG, "AI-ready", "AI ready"]
+    europepmc: 'TITLE_ABS:(("Darwin Core" OR GBIF OR OBIS OR ENVO OR "AI-ready" OR "FAIR principles" OR "CARE principles" OR "biodiversity informatics") AND (data OR biodiversity))'
+    openalex: '("Darwin Core" OR GBIF OR OBIS OR "AI-ready data" OR "FAIR principles" OR "CARE principles" OR "biodiversity informatics")'
+    biodivpmc: null
+    biorxiv_categories: []
+    arxiv: '(abs:biodiversity OR abs:"Darwin Core" OR abs:GBIF) AND (abs:"data standard" OR abs:"FAIR" OR abs:"AI-ready") AND cat:cs.DL'
+    consensus:
+      - "AI-ready biodiversity data FAIR CARE principles"
+
+  - id: llm-biodiversity
+    label: Language models applied to biodiversity and ecology
+    terms: ["large language model", "large language models", LLM, LLMs, "generative AI", "foundation model", "foundation models", chatbot, "retrieval-augmented"]
+    europepmc: 'TITLE_ABS:(("large language model*" OR LLM OR LLMs OR "generative AI" OR "retrieval-augmented") AND (biodiversity OR ecolog* OR taxonom* OR conservation OR species))'
+    openalex: '("large language model" OR "large language models" OR LLM OR "generative AI") AND (biodiversity OR ecology OR taxonomy OR conservation)'
+    biodivpmc: '("large language model" OR "large language models" OR LLM) AND (biodiversity OR ecology OR ecological OR taxonomy OR taxonomic OR species)'
+    biodivpmc_cols: [medline, pmc]
+    biorxiv_categories: [ecology, bioinformatics]
+    arxiv: '(abs:biodiversity OR abs:ecology OR abs:ecological OR abs:taxonomy OR abs:"species occurrence" OR abs:conservation) AND (abs:"language model" OR abs:"language models" OR abs:LLM) AND (cat:cs.CL OR cat:cs.AI OR cat:cs.IR OR cat:cs.DL OR cat:q-bio.PE OR cat:q-bio.QM)'
+    consensus:
+      - "large language models in ecology and biodiversity"
+      - "retrieval augmented generation scientific literature evaluation"
+
+  - id: llm-failures
+    label: Hallucination, invented citations, sycophancy, non-determinism
+    terms: [hallucination, hallucinations, hallucinate, sycophancy, sycophantic, "fabricated citation", "fabricated references", nondeterminism, "non-determinism", reproducibility]
+    europepmc: 'TITLE_ABS:(("large language model*" OR LLM OR chatbot*) AND (hallucinat* OR sycophan* OR "fabricated citation*" OR "fabricated reference*" OR nondetermin* OR reproducib*))'
+    openalex: null
+    biodivpmc: null
+    biorxiv_categories: []
+    arxiv: '(abs:hallucination OR abs:hallucinations OR abs:sycophancy OR abs:sycophantic OR abs:"fabricated citations" OR abs:nondeterminism OR abs:"non-determinism") AND (abs:"language model" OR abs:"language models" OR abs:LLM) AND (cat:cs.CL OR cat:cs.AI)'
+    consensus:
+      - "large language models hallucinated citations rate"
+
+  - id: agents-local-first
+    label: Agents, harnesses, skills, prompt injection, local-first and open-weight models
+    terms: ["coding agent", "coding agents", harness, "prompt injection", "Model Context Protocol", MCP, "local-first", quantization, quantisation, LoRA, "open-weight", "open weight", "on-device"]
+    europepmc: null
+    openalex: null
+    biodivpmc: null
+    biorxiv_categories: []
+    # Narrowed on 14 October 2026 after the first week returned 424 items: "harness"
+    # alone matched 128 (the verb), "open-weight" 99. Phrases only now.
+    arxiv: '(abs:"prompt injection" OR abs:"Model Context Protocol" OR abs:"agent skills" OR abs:"coding agent" OR abs:"coding agents" OR abs:"agent harness" OR abs:"local-first") AND (cat:cs.CL OR cat:cs.AI OR cat:cs.SE OR cat:cs.CR OR cat:cs.LG)'
+    consensus:
+      - "prompt injection attacks on LLM agents defenses"
+      - "reproducibility of large language model outputs"
+
+  - id: biosecurity-ai
+    label: Biosecurity, dual use and language models
+    terms: [biosecurity, "dual use", "dual-use", biorisk, "biological weapons", uplift]
+    europepmc: 'TITLE_ABS:((biosecurity OR "dual use" OR "dual-use" OR biorisk) AND ("language model*" OR "artificial intelligence" OR AI OR LLM))'
+    openalex: '(biosecurity OR "dual use" OR biorisk) AND ("language model" OR "language models" OR "artificial intelligence")'
+    biodivpmc: null
+    biorxiv_categories: []
+    arxiv: '(abs:biosecurity OR abs:"dual use" OR abs:biorisk) AND (abs:"language model" OR abs:"language models" OR abs:LLM) AND (cat:cs.CR OR cat:cs.CY OR cat:cs.AI OR cat:q-bio.OT)'
+    consensus:
+      - "biosecurity risks of large language models evidence"
+
+  - id: long-view
+    label: Noosphere, evolvable AI and biospheric ethics
+    terms: [noosphere, "evolvable AI", biospheric, Vernadsky, "planetary intelligence"]
+    europepmc: null
+    openalex: 'noosphere OR "evolvable AI" OR "biospheric AI" OR "planetary intelligence"'
+    biodivpmc: null
+    biorxiv_categories: []
+    arxiv: null
+    consensus: []
+
+# People to follow. arXiv: au: field (surname_initial), filtered by categories.
+# OpenAlex: author ids resolved once by hand from
+# https://api.openalex.org/authors?search=<name> and recorded here; a name
+# without an id is skipped and reported.
+people:
+  arxiv_au: [Mitchell_M, Bengio_Y, Casper_S, Manning_C, Kleppmann_M]
+  arxiv_cats: [cs.CL, cs.AI, cs.IR, cs.LG, cs.CY, cs.SE, cs.DC, q-bio.PE]
+  openalex_author_ids: {}
+    # "Ewan Birney": "A…"
+    # "Julio Saez-Rodriguez": "A…"
+    # "Lars Juhl Jensen": "A…"
+    # "Sophia Ananiadou": "A…"
+    # "Anne E. Thessen": "A…"
+    # "Anil K. Seth": "A…"
+    # "Blaise Agüera y Arcas": "A…"
+    # "David C. Krakauer": "A…"
+    # "Hadley Wickham": "A…"
+    # "Stephen D. Turner": "A…"
+    # "Peer Bork": "A…"
+    # "Ricard Solé": "A…"
