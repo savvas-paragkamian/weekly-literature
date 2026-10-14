@@ -1,0 +1,20 @@
+# Raw API responses hold full abstracts (publisher text): kept out of git,
+# uploaded as a workflow artifact, listed with MD5 sums in the week's log.
+# The fixture week stays in, so that the offline test runs from a clone.
+data/raw/*
+!data/raw/2026-W00/
+
+# renv: the lockfile is tracked, the library is not
+renv/library/
+renv/staging/
+renv/local/
+renv/cellar/
+renv/sandbox/
+
+# local logs of the launchd job
+provenance/launchd.out
+provenance/launchd.err
+
+.Rhistory
+.RData
+.DS_Store
