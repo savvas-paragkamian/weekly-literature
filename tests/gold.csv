@@ -1,0 +1,13 @@
+doi,title,topic,first_pub_date,how_learned
+10.1016/j.ecoinf.2026.103699,"Large language models possess some ecological knowledge, but how much?",llm-biodiversity,,book bibliography (dorm2026ecologicalknowledge)
+10.1186/s13059-026-04207-7,Comparative assessment of large language models for microbial phenotype assignment,llm-biodiversity,,book bibliography (munch2026phenotypes)
+10.1007/s00248-026-02730-5,LLM-Assessed Relatedness of Microbiome Study Descriptions Aligns more Strongly with Functional than with Taxonomic Profile Similarity,llm-biodiversity,,book bibliography (venetsianou2026relatedness)
+10.1073/pnas.2533976123,Ecology is not yet ready for AI and why that matters,llm-biodiversity,,book bibliography (mishra2026notready)
+10.1016/j.ecoinf.2025.103569,Towards decentralized ecological monitoring: A local-first web-based AI platform for sea turtle detection,agents-local-first,,book bibliography (placitelli2026seaturtle)
+10.1126/sciadv.aeb6975,Unlocking biodiversity data with robotic imaging and AI-driven transcription of natural history collections,biodiversity-standards,,book bibliography (johnson2026collections)
+10.1371/journal.pone.0344181,Utilizing large language models to construct a dataset of Wurttemberg's 19th-century fauna from historical records,text-mining-biodiversity,,book bibliography (teich2026wurttemberg)
+10.1016/j.ecoinf.2026.103839,Benchmarking large language models for biodiversity assessment: Performance and biases across IUCN Red List species,llm-biodiversity,,book bibliography (uryu2026redlist)
+arxiv:2607.28229,EMBL AI Librarian: Life-Sciences Knowledge Layer for AI Agents,llm-biodiversity,,book bibliography (sigillo2026embllibrarian)
+10.5194/wbf2026-511,How Biodiversity PMC can support literature search for biodiversity research,text-mining-biodiversity,,book bibliography (pasche2026biodivpmc)
+10.1038/s42003-026-10694-y,"Advancing FAIR data towards comparable, organized, predictive AI-ready data for community validation",biodiversity-standards,,book bibliography (woodcharlson2026cope)
+10.1093/biosci/biag147,Opening ecological data to reduce bias and strengthen AI in ecology,biodiversity-standards,,book bibliography (torresani2026opening)
