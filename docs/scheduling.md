@@ -42,7 +42,7 @@ line, after a one-time interactive `claude mcp login` for Consensus:
 cd "$HOME/projects/weekly-literature" && git pull --ff-only && \
 week=$(date -v-1d +%G-W%V) && \
 claude -p "/weekly-literature $week" --permission-mode dontAsk \
-  --allowedTools "Read,Glob,Grep,Bash(Rscript R/skill_verify.R *),Bash(Rscript tests/check_notes.R *),Edit(notes/*),Edit(provenance/search-log.md),mcp__plugin_bio-research_consensus__search" \
+  --allowedTools "Read,Glob,Grep,ToolSearch,Bash(claude --version),Bash(Rscript R/skill_verify.R *),Bash(Rscript tests/check_notes.R *),Edit(notes/*),Edit(provenance/search-log.md),mcp__plugin_bio-research_consensus__search,mcp__claude_ai_Consensus__search" \
   --max-turns 60 --output-format json > "provenance/runs/$week-assistant.json" 2>> provenance/launchd.err
 ```
 

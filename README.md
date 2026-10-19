@@ -61,6 +61,7 @@ From the repository root, with R 4.5 and `renv`:
 ```bash
 Rscript -e 'renv::restore()'             # the exact package versions in renv.lock
 Rscript R/03_check.R --self-test         # a check that can fail: three planted errors must be caught
+Rscript R/02_normalise.R --self-test     # surname-first author names must parse to the right key
 Rscript R/run_week.R 2026-W00 --offline  # the fixture week, no network
 Rscript R/run_week.R                     # the week that ended yesterday, live
 Rscript R/run_week.R 2026-W41            # a given ISO week
@@ -76,7 +77,7 @@ The assistant, after `claude mcp login` for Consensus once:
 
 ```bash
 claude -p "/weekly-literature 2026-W41" --permission-mode dontAsk \
-  --allowedTools "Read,Glob,Grep,Bash(Rscript R/skill_verify.R *),Bash(Rscript tests/check_notes.R *),Edit(notes/*),Edit(provenance/search-log.md),mcp__plugin_bio-research_consensus__search" \
+  --allowedTools "Read,Glob,Grep,ToolSearch,Bash(claude --version),Bash(Rscript R/skill_verify.R *),Bash(Rscript tests/check_notes.R *),Edit(notes/*),Edit(provenance/search-log.md),mcp__plugin_bio-research_consensus__search,mcp__claude_ai_Consensus__search" \
   --max-turns 60 --output-format json > provenance/runs/2026-W41-assistant.json
 Rscript tests/check_notes.R notes/2026-W41.md
 ```
@@ -90,6 +91,10 @@ Rscript tests/check_notes.R notes/2026-W41.md
   distance over the longer normalised title, threshold 0.85; a title that is
   the other without its subtitle also passes. Identifiers verified in an
   earlier week are not resolved again.
+- `Rscript R/02_normalise.R --self-test`: a planted Biodiversity PMC record
+  whose authors are written surname first, as in MEDLINE, must give
+  `Taskaeva, Anastasia A`, keep particles with the surname and produce the key
+  `taskaeva2026wastewater`.
 - `Rscript tests/check_notes.R --self-test` and
   `Rscript tests/check_notes.R notes/<week>.md`: every `[key]` in the notes is
   in the week's bibliography, every URL was logged or is a verified DOI.

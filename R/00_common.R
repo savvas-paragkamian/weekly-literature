@@ -186,6 +186,39 @@ authors_from_biorxiv <- function(s) {
   paste(trimws(strsplit(s, ";", fixed = TRUE)[[1]]), collapse = " and ")
 }
 
+# Biodiversity PMC authors are written surname first, as in MEDLINE:
+# "Taskaeva Anastasia A", "Rebez E B", "Van Berkel Derek B" -> "Taskaeva, Anastasia A",
+# "Rebez, E B", "Van Berkel, Derek B". author_bib() expects "Given Surname" and made
+# the first given name or the last initial the surname. Particles stay with the
+# surname: leading ones ("de la Cruz Maria") and lowercase ones after the first word
+# ("Gomes da Silva Juliane"; "Nguyen Van Anh T" keeps "Van" as a given name).
+# Separate surname and given_names fields are taken as they are.
+SURNAME_PARTICLES <- c("van", "von", "der", "den", "de", "del", "della", "di", "da", "dos", "das", "du", "ten", "ter")
+authors_from_biodivpmc <- function(a) {
+  if (is.null(a) || length(a) == 0) return(NA_character_)
+  out <- vapply(a, function(x) {
+    if (is.list(x)) {
+      if (!is.null(x$surname)) return(trimws(paste0(x$surname, ", ", x$given_names %||% "")))
+      x <- x$name
+    }
+    x <- trimws(as.character(x %||% ""))
+    if (x == "" || grepl(",", x)) return(x)
+    p <- strsplit(x, "\\s+")[[1]]
+    if (length(p) < 2) return(x)
+    k <- 1
+    repeat {
+      if (k < length(p) - 1 && (tolower(p[k]) %in% SURNAME_PARTICLES ||
+                                (k > 1 && tolower(p[k]) %in% c("la", "le", "los", "las")))) k <- k + 1
+      else if (k < length(p) - 2 && p[k + 1] %in% c(SURNAME_PARTICLES, "la", "le", "los", "las")) k <- k + 2
+      else break
+    }
+    paste0(paste(p[1:k], collapse = " "), ", ", paste(p[-(1:k)], collapse = " "))
+  }, character(1), USE.NAMES = FALSE)
+  out <- out[out != ""]
+  if (length(out) == 0) return(NA_character_)
+  paste(out, collapse = " and ")
+}
+
 # OpenAlex abstract_inverted_index -> text
 abstract_from_inverted <- function(idx) {
   if (is.null(idx) || length(idx) == 0) return(NA_character_)
@@ -305,11 +338,9 @@ parse_biodivpmc <- function(path, topic) {
   bind(lapply(hits, function(h) {
     s <- h$`_source`
     doi <- norm_doi(s$doi %||% NA)
-    authors <- s$authors
-    if (is.list(authors)) authors <- vapply(authors, function(a) if (is.list(a)) (a$name %||% paste(a$surname %||% "", a$given_names %||% "")) else as.character(a), character(1))
     rec(source = "biodivpmc", topic = topic, src_id = paste0(j$collection %||% "col", ":", h$`_id`),
         doi = doi, pmid = s$pmid %||% NA, pmcid = s$pmcid %||% NA,
-        title = s$title, authors = author_bib(as.character(authors %||% character())),
+        title = s$title, authors = authors_from_biodivpmc(s$authors),
         venue = s$journal %||% s$medline_ta %||% NA, date = s$publication_date %||% NA,
         type = "article",
         url = if (!is.na(doi)) paste0("https://doi.org/", doi) else paste0("https://biodiversitypmc.sibils.org/"),

@@ -98,3 +98,45 @@ Actions were written from documentation and not run.
   and that `Edit(path)` rules cover every file-editing tool; the settings and
   the skill's `allowed-tools` use `Edit(...)` only. Tested with `claude -p`:
   a write to `reviews/` was refused, one to `notes/` allowed.
+
+## Biodiversity PMC author names (19 October 2026)
+
+- Biodiversity PMC writes authors surname first, as in MEDLINE
+  (`"Taskaeva Anastasia A"`, `"Rebez E B"`); the parser passed them to
+  `author_bib()`, which expects given name first, so the last word became the
+  surname: `A, Taskaeva Anastasia` in the review and keys such as
+  `a2026wastewater` and `min2026evolutionary`. `R/00_common.R` now has
+  `authors_from_biodivpmc()`: first word is the surname, with leading
+  particles (`Van Berkel`, `de la Cruz`) and lowercase particles after it
+  (`Gomes da Silva`); separate `surname`/`given_names` fields are taken as
+  given. A capitalised `Van` after the first word stays a given name
+  (Vietnamese). Names with several surnames and no particle
+  (`Bezerra de Menezes Oliveira Vanessa`) still split after the particle's
+  word. `R/02_normalise.R --self-test` checks seven planted names and the key.
+  The format of the `pmc` collection's authors was not checked: it returned
+  no records in W41 or W42.
+- Keys built from such names: 25 in 2026-W41 and one in the 14 October
+  2026-W42 run (`enes2026sequence`), all committed and pushed, are left as
+  they are. Three from the author's 19 October run of 2026-W42 (committed and
+  pushed as `5726e84`) were redone: at the author's choice, `data/seen.csv`
+  and `bib/all.bib` were restored to `a97bd29` and the week was rerun with
+  `R/run_week.R 2026-W42 --no-fetch`; the log says so.
+- The fix was written by Claude in a Claude Code session and applied with
+  `git apply` at the author's instruction; `.claude/settings.json` denies
+  agents edits under `R/`, `data/` and `bib/`, and was not changed.
+
+## First assistant runs (19 October 2026)
+
+- The first headless run of `/weekly-literature 2026-W42` made no Consensus
+  call: the session offered Consensus as `mcp__claude_ai_Consensus__search`
+  (the claude.ai connector), while `--allowedTools` and the skill named only
+  `mcp__plugin_bio-research_consensus__search`, so `dontAsk` refused it,
+  though `claude mcp list` showed the plugin's server connected. The
+  connector's name was added to the skill's `allowed-tools` and to the
+  commands in `README.md` and `docs/scheduling.md`, with `ToolSearch` and
+  `Bash(claude --version)`; the commands are as run the second time.
+- The second run made 3 of the 16 configured Consensus calls and stopped: the
+  account had 6 searches left until 1 November (the allowance is 500 a month).
+  Six Consensus papers were verified through `R/skill_verify.R`. The notes
+  still record no Claude Code version: the assistant did not run the command.
+- Both runs are in `tests/results.csv` and `provenance/runs/`.

@@ -3,7 +3,30 @@
 # identifier, then by normalised title.
 # Run from the repository root: Rscript R/02_normalise.R [YYYY-WW]
 # Writes data/normalised/<week>.csv and prints the counts after each merge.
+#   --self-test  parse a planted Biodiversity PMC record whose authors are written
+#                surname first; passes only if every name and the key come out right
 source("R/00_common.R")
+
+self_test <- function() {
+  path <- tempfile(fileext = ".json")
+  writeLines(jsonlite::toJSON(list(collection = "medline", elastic_output = list(hits = list(hits = list(
+    list(`_id` = "1", `_source` = list(title = "Wastewater as a driver of lineage replacement", publication_date = "2026-10-13",
+         authors = c("Taskaeva Anastasia A", "Rebez E B", "Van Berkel Derek B", "de la Cruz Maria",
+                     "Gomes da Silva Juliane", "Nguyen Van Anh T", "Le Minh"))),
+    list(`_id` = "2", `_source` = list(title = "A record with author fields", publication_date = "2026-10-13",
+         authors = list(list(surname = "Dickschat", given_names = "Jeroen S")))))))), auto_unbox = TRUE), path)
+  r <- parse_biodivpmc(path, "selftest")
+  want <- c("Taskaeva, Anastasia A and Rebez, E B and Van Berkel, Derek B and de la Cruz, Maria and Gomes da Silva, Juliane and Nguyen, Van Anh T and Le, Minh",
+            "Dickschat, Jeroen S")
+  key <- bib_key(first_surname(r$authors[1]), "2026", r$title[1])
+  for (i in seq_along(want)) say(if (identical(r$authors[i], want[i])) "ok    " else "WRONG ", r$authors[i])
+  say(if (key == "taskaeva2026wastewater") "ok    " else "WRONG ", "key ", key)
+  if (identical(r$authors, want) && key == "taskaeva2026wastewater") {
+    say("SELF-TEST PASSED: Biodiversity PMC authors parsed surname first; key taskaeva2026wastewater"); quit(status = 0)
+  }
+  say("SELF-TEST FAILED"); quit(status = 1)
+}
+if (has_flag("--self-test")) self_test()
 
 cfg <- load_config()
 week <- week_arg()

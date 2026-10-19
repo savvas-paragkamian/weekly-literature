@@ -3,7 +3,7 @@ name: weekly-literature
 description: Write grounded notes for one week of the literature review. Reads reviews/<week>.md and bib/<week>.bib, runs the Consensus queries listed in config/interests.yml through the Consensus MCP server, verifies every candidate in code, writes notes/<week>.md and logs every search. Use with /weekly-literature YYYY-WW.
 argument-hint: "YYYY-WW"
 disable-model-invocation: true
-allowed-tools: Read, Glob, Grep, Bash(Rscript R/skill_verify.R *), Bash(Rscript tests/check_notes.R *), Bash(git status), Bash(git diff *), Edit(notes/*), Edit(provenance/search-log.md), mcp__plugin_bio-research_consensus__search, mcp__consensus__search
+allowed-tools: Read, Glob, Grep, Bash(Rscript R/skill_verify.R *), Bash(Rscript tests/check_notes.R *), Bash(git status), Bash(git diff *), Edit(notes/*), Edit(provenance/search-log.md), mcp__plugin_bio-research_consensus__search, mcp__consensus__search, mcp__claude_ai_Consensus__search
 ---
 
 # Weekly literature notes for week $ARGUMENTS
