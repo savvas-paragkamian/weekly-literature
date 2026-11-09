@@ -4,6 +4,7 @@ Newest first. Each review is script output; a notes file, when present, was writ
 
 | Week | New items | Review | Bibliography | Log | Notes |
 |---|---|---|---|---|---|
+| 2026-W45 | 442 | [review](reviews/2026-W45.md) | [bib](bib/2026-W45.bib) | [log](provenance/2026-W45.log.md) |  |
 | 2026-W44 | 426 | [review](reviews/2026-W44.md) | [bib](bib/2026-W44.bib) | [log](provenance/2026-W44.log.md) |  |
 | 2026-W43 | 439 | [review](reviews/2026-W43.md) | [bib](bib/2026-W43.bib) | [log](provenance/2026-W43.log.md) |  |
 | 2026-W42 | 360 | [review](reviews/2026-W42.md) | [bib](bib/2026-W42.bib) | [log](provenance/2026-W42.log.md) | [notes](notes/2026-W42.md) |
